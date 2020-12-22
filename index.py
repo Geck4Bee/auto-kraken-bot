@@ -1,5 +1,7 @@
 import json
 import datetime
+import sys
+sys.path.append('lib')
 
 
 def handler(event, context):
