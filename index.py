@@ -1,7 +1,14 @@
-import json
-import datetime
 import sys
 sys.path.append('lib')
+
+import json
+import datetime
+
+from selenium import webdriver
+from bs4 import BeautifulSoup
+import time
+import urllib3
+import os
 
 
 def handler(event, context):
