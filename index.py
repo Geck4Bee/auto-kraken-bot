@@ -16,7 +16,7 @@ def handler(event, context):
         
         objs = []
         try:
-            soup = BeautifulSoup(res.content, "html.parser")
+            soup = BeautifulSoup(res.text, "html.parser")
             for aa in soup.find_all("a"):
                 link = aa.get("href")
                 name = aa.get_text()
