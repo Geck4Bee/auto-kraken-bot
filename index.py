@@ -141,6 +141,7 @@ def handler(event, context):
             putting = putDynamoDB(obj)
 
     if len(translated_objs) > 0:
+        print(os.environ['WEBHOOK'])
         webhook = sendWebHook(translated_objs)
 
     data = {
