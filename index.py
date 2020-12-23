@@ -111,9 +111,9 @@ def translation(obj):
         return obj
 
 def sendWebHook(objs):
-    content = '●新着クラーケン\n'
+    content = '●新着クラーケン\n\n'
     for obj in objs:
-        content += obj['en'] + '\n' + obj['ja'] + obj['URL']
+        content += obj['en'] + '\n' + obj['ja'] + '\n' + obj['URL'] + '\n\n'
     try:
         response = requests.post(
             os.environ['WEBHOOK'],
