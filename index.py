@@ -17,6 +17,8 @@ translate = boto3.client(service_name='translate', region_name='us-east-1', use_
 dynamoDB = boto3.resource('dynamodb', 'ap-northeast-1')
 table = dynamoDB.Table(os.environ['TABLE'])
 
+passURL = ['donate.html', 'https://www.stop2020fraud.com/', 'images/immaculate.pdf', 'terms.html']
+
 def webscrape():
     # webdriver settings
     try:
@@ -49,11 +51,12 @@ def shaping_data(html):
         for aa in soup.find_all("a"):
             link = aa.get("href")
             name = aa.get_text()
-            objs.append({
-                'URL': link,
-                'en': name,
-                'ja': '',
-            })
+            if link not in passURL:
+                objs.append({
+                    'URL': link,
+                    'en': name,
+                    'ja': '',
+                })
     except Exception as ee:
         sys.stderr.write("*** error *** in BeautifulSoup ***\n")
         sys.stderr.write(str(ee) + "\n")
@@ -107,17 +110,33 @@ def translation(obj):
     else:
         return obj
 
+def sendWebHook(objs):
+    content = '●新着クラーケン\n'
+    for obj in objs:
+        content += obj['en'] + '\n' + obj['ja'] + obj['URL']
+    try:
+        response = requests.post(
+            os.environ['WEBHOOK'],
+            {"content": content}
+        )
+    except Exception as ew:
+        sys.stderr.write("*** error *** in SendWebHook ***\n")
+        sys.stderr.write(str(ew) + "\n")
+    else:
+        return response
+
 def handler(event, context):
     objs = webscrape()
     translated_objs = []
     try:
         for obj in objs:
             getFromDB = getFromDynamoDB(obj['URL'])
-            print(getFromDB)
             if len(getFromDB['Items']) == 0:
                 translated = translation(obj)
                 translated_objs.append(translated)
                 putting = putDynamoDB(obj)
+                if (len(translated_objs) > 0):
+                    webhook = sendWebHook(translated_objs)
     except Exception as eh:
         sys.stderr.write("*** error *** in PutDynamoDB ***\n")
         sys.stderr.write(str(eh) + "\n")
