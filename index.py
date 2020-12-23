@@ -120,10 +120,12 @@ def sendWebHook(objs):
     for obj in objs:
         content += obj['en'] + '\n' + obj['ja'] + '\n' + obj['URL'] + '\n\n'
     try:
+        print('shot webhook!')
         response = requests.post(
             os.environ['WEBHOOK'],
             {"content": content}
         )
+        print(response)
     except Exception as ew:
         sys.stderr.write("*** error *** in SendWebHook ***\n")
         sys.stderr.write(str(ew) + "\n")
@@ -141,7 +143,6 @@ def handler(event, context):
             putting = putDynamoDB(obj)
 
     if len(translated_objs) > 0:
-        print(os.environ['WEBHOOK'])
         webhook = sendWebHook(translated_objs)
 
     data = {
