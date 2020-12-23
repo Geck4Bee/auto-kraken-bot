@@ -133,19 +133,15 @@ def sendWebHook(objs):
 def handler(event, context):
     objs = webscrape()
     translated_objs = []
-    try:
-        for obj in objs:
-            getFromDB = getFromDynamoDB(obj['URL'])
-            if len(getFromDB['Items']) == 0:
-                translated = translation(obj)
-                translated_objs.append(translated)
-                putting = putDynamoDB(obj)
-        
-        if (len(translated_objs) > 0):
-            webhook = sendWebHook(translated_objs)
-    except Exception as eh:
-        sys.stderr.write("*** error *** in PutDynamoDB ***\n")
-        sys.stderr.write(str(eh) + "\n")
+    for obj in objs:
+        getFromDB = getFromDynamoDB(obj['URL'])
+        if len(getFromDB['Items']) == 0:
+            translated = translation(obj)
+            translated_objs.append(translated)
+            putting = putDynamoDB(obj)
+
+    if (len(translated_objs) > 0):
+        webhook = sendWebHook(translated_objs)
 
     data = {
         'output': 'Hello World',
