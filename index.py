@@ -110,6 +110,7 @@ def handler(event, context):
     try:
         for obj in objs:
             getFromDB = getFromDynamoDB(obj['URL'])
+            print(getFromDB)
             if len(getFromDB['Items']) == 0:
                 translated = translation(obj)
                 translated_objs.append(translated)
