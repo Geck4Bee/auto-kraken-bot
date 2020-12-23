@@ -80,7 +80,7 @@ def getFromDynamoDB(URL):
 
 def putDynamoDB(obj):
     try:
-        dateISO = datetime.datetime.utcnow().isoformat()
+        dateISO = datetime.datetime.utcnow().isoformat()[:-3]+'Z'
         item = {
             'id': generate(),
             'URL': obj['URL'],
