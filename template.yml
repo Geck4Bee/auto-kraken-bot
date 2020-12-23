@@ -31,6 +31,7 @@ Resources:
       Handler: index.handler
       Runtime: python3.7
       Timeout: 30
+      MemorySize: 1024
       Role:
         Fn::GetAtt:
         - LambdaExecutionRole
