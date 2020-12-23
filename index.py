@@ -84,7 +84,7 @@ def putDynamoDB(obj):
         item = {
             'id': generate(),
             'URL': obj['URL'],
-            'en': obj['en'],
+            'en': obj['en'].replace('â€“', ' - '),
             'ja': obj['ja'],
             'createdAt': dateISO,
             'updatedAt': dateISO
