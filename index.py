@@ -55,7 +55,7 @@ def shaping_data(html):
             if link not in passURL:
                 objs.append({
                     'URL': link,
-                    'en': name,
+                    'en': name.replace('â€“', ' - '),
                     'ja': '',
                 })
     except Exception as ee:
@@ -84,7 +84,7 @@ def putDynamoDB(obj):
         item = {
             'id': generate(),
             'URL': obj['URL'],
-            'en': obj['en'].replace('â€“', ' - '),
+            'en': obj['en'],
             'ja': obj['ja'],
             'createdAt': dateISO,
             'updatedAt': dateISO
