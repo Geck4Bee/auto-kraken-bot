@@ -26,7 +26,7 @@ def webscrape():
         # web scraping
         driver.get("https://kraken-wood.com/")
         #ここの時間が長いとlambdaの料金が無駄にかかります。driverがページの表示にかかる時間分だけを設定するのが良いです。
-        time.sleep(30)
+        time.sleep(1)
         html = driver.page_source.encode('utf-8')
     except Exception as ee:
         sys.stderr.write("*** error *** in webdriver ***\n")
