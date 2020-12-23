@@ -76,12 +76,15 @@ def getFromDynamoDB(URL):
 
 def putDynamoDB(obj):
     try:
+        dateISO = datetime.datetime.utcnow().isoformat()
         table.put_item(
             Item = {
                 'id': generate(),
                 'URL': obj['URL'],
                 'en': obj['en'],
-                'ja': obj['ja']
+                'ja': obj['ja'],
+                'createdAt': dateISO,
+                'updatedAt': dateISO
             }
         )
     except Exception as ep:
