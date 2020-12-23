@@ -119,9 +119,9 @@ def sendWebHook(objs):
     content = '●新着クラーケン\n\n'
     for obj in objs:
         content += obj['en'] + '\n' + obj['ja'] + '\n' + obj['URL'] + '\n\n'
+        content = content.replace('"', '\\\"').replace("'", "\\\'")
     try:
         print('shot webhook!')
-        print(json.dumps({"content": content}))
         response = requests.post(
             os.environ['WEBHOOK'],
             json.dumps({"content": content}),
