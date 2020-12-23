@@ -16,6 +16,7 @@ import time
 translate = boto3.client(service_name='translate', region_name='us-east-1', use_ssl=True)
 dynamoDB = boto3.resource('dynamodb', 'ap-northeast-1')
 table = dynamoDB.Table(os.environ['TABLE'])
+stgTable = dynamoDB.Table(os.environ['TABLE_STG'])
 
 passURL = ['donate.html', 'https://www.stop2020fraud.com/', 'images/immaculate.pdf', 'terms.html']
 
@@ -80,15 +81,19 @@ def getFromDynamoDB(URL):
 def putDynamoDB(obj):
     try:
         dateISO = datetime.datetime.utcnow().isoformat()
+        item = {
+            'id': generate(),
+            'URL': obj['URL'],
+            'en': obj['en'],
+            'ja': obj['ja'],
+            'createdAt': dateISO,
+            'updatedAt': dateISO
+        }
         table.put_item(
-            Item = {
-                'id': generate(),
-                'URL': obj['URL'],
-                'en': obj['en'],
-                'ja': obj['ja'],
-                'createdAt': dateISO,
-                'updatedAt': dateISO
-            }
+            Item = item
+        )
+        stgTable.put_item(
+            Item = item
         )
     except Exception as ep:
         sys.stderr.write("*** error *** in PutDynamoDB ***\n")
