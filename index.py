@@ -7,6 +7,7 @@ import datetime
 import boto3
 from boto3.dynamodb.conditions import Key
 
+from nanoid import generate
 import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -77,7 +78,7 @@ def putDynamoDB(obj):
     try:
         table.put_item(
             Item = {
-                'id': 'test',
+                'id': generate(),
                 'URL': obj['URL'],
                 'en': obj['en'],
                 'ja': obj['ja']
