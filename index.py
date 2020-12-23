@@ -123,7 +123,8 @@ def sendWebHook(objs):
         print('shot webhook!')
         response = requests.post(
             os.environ['WEBHOOK'],
-            {"content": content}
+            json={"content": content},
+            headers={'Content-Type': 'application/json'}
         )
         print(response)
     except Exception as ew:
