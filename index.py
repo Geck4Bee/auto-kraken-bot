@@ -55,7 +55,7 @@ def shaping_data(html):
             if link not in passURL:
                 objs.append({
                     'URL': link,
-                    'en': name.replace('â€“', ' - '),
+                    'en': name.replace('â€“', ' - ').replace('ðŸš¨', '[alert]'),
                     'ja': '',
                 })
     except Exception as ee:
