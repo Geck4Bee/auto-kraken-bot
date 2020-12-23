@@ -83,6 +83,7 @@ def putDynamoDB(obj):
         dateISO = datetime.datetime.utcnow().isoformat()[:-3]+'Z'
         item = {
             'id': generate(),
+            'div': '1',
             'URL': obj['URL'],
             'en': obj['en'],
             'ja': obj['ja'],
