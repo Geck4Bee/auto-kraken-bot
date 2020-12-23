@@ -121,6 +121,7 @@ def sendWebHook(objs):
         content += obj['en'] + '\n' + obj['ja'] + '\n' + obj['URL'] + '\n\n'
     try:
         print('shot webhook!')
+        print(json.dumps({"content": content}))
         response = requests.post(
             os.environ['WEBHOOK'],
             json.dumps({"content": content}),
