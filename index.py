@@ -111,8 +111,9 @@ def translation(obj):
             "text": obj['en'],
             "target_lang": 'JA'
         }
-        request = requests.post("https://api.deepl.com/v2/translate", data=params)
-        result = json.loads(request)
+        response = requests.post("https://api.deepl.com/v2/translate", data=params)
+        result = response.json()
+        print(result)
         obj['ja'] = result["translations"][0]["text"]
     except Exception as et:
         sys.stderr.write("*** error *** in Translation ***\n")
