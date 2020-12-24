@@ -13,7 +13,7 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 import time
 
-translate = boto3.client(service_name='translate', region_name='us-east-1', use_ssl=True)
+# translate = boto3.client(service_name='translate', region_name='us-east-1', use_ssl=True)
 dynamoDB = boto3.resource('dynamodb', 'ap-northeast-1')
 table = dynamoDB.Table(os.environ['TABLE'])
 stgTable = dynamoDB.Table(os.environ['TABLE_STG'])
@@ -104,12 +104,15 @@ def putDynamoDB(obj):
 
 def translation(obj):
     try:
-        result = translate.translate_text(
-            Text=obj['en'], 
-            SourceLanguageCode="en",
-            TargetLanguageCode="ja"
-        )
-        obj['ja'] = result.get('TranslatedText')
+        params = {
+            "auth_key": os.environ['DEEPL_API_KEY'],
+            "text": obj['en'],
+            "source_lang": 'EN',
+            "target_lang": 'JA'
+        }
+        request = requests.post("https://api.deepl.com/v2/translate", data=params)
+        result = request.json()
+        obj['ja'] = result["translations"][0]["text"]
     except Exception as et:
         sys.stderr.write("*** error *** in Translation ***\n")
         sys.stderr.write(str(et) + "\n")
