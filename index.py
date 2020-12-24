@@ -51,6 +51,8 @@ def shaping_data(html):
         soup = BeautifulSoup(html, "html.parser")
         for aa in soup.find_all("a"):
             link = aa.get("href")
+            if link[0] is '/':
+                link = 'https://kraken-wood.com' + link
             name = aa.get_text()
             if link not in passURL:
                 objs.append({
@@ -107,11 +109,10 @@ def translation(obj):
         params = {
             "auth_key": os.environ['DEEPL_API_KEY'],
             "text": obj['en'],
-            "source_lang": 'EN',
             "target_lang": 'JA'
         }
         request = requests.post("https://api.deepl.com/v2/translate", data=params)
-        result = request.json()
+        result = json.loads(request)
         obj['ja'] = result["translations"][0]["text"]
     except Exception as et:
         sys.stderr.write("*** error *** in Translation ***\n")
