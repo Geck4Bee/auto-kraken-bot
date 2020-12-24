@@ -106,12 +106,14 @@ def putDynamoDB(obj):
 
 def translation(obj):
     try:
-        params = {
-            "auth_key": os.environ['DEEPL_API_KEY'],
-            "text": obj['en'],
-            "target_lang": 'JA'
-        }
-        response = requests.post("https://api.deepl.com/v2/translate", data=params)
+        response = requests.post(
+            "https://api.deepl.com/v2/translate",
+            data={
+                "auth_key": os.environ['DEEPL_API_KEY'],
+                "text": obj['en'],
+                "target_lang": 'JA'
+            }
+        )
         result = response.json()
         print(result)
         obj['ja'] = result["translations"][0]["text"]
