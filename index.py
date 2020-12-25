@@ -114,7 +114,7 @@ def translation(obj):
                 "target_lang": 'JA'
             }
         )
-        result = response.text()
+        result = response.text
         print(result)
         obj['ja'] = json.dumps(result)["translations"][0]["text"]
     except Exception as et:
