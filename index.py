@@ -106,7 +106,6 @@ def putDynamoDB(obj):
 
 def translation(obj):
     try:
-        print(os.environ['DEEPL_API_KEY'])
         response = requests.post(
             "https://api.deepl.com/v2/translate",
             data={
@@ -116,9 +115,8 @@ def translation(obj):
             }
         )
         print(response.status_code)
-        result = response.encoding
-        print(result)
-        obj['ja'] = json.dumps(result)["translations"][0]["text"]
+        result = response.json()
+        obj['ja'] = result["translations"][0]["text"]
     except Exception as et:
         sys.stderr.write("*** error *** in Translation ***\n")
         sys.stderr.write(str(et) + "\n")
