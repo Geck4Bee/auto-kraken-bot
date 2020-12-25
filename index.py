@@ -106,6 +106,7 @@ def putDynamoDB(obj):
 
 def translation(obj):
     try:
+        print(os.environ['DEEPL_API_KEY'])
         response = requests.post(
             "https://api.deepl.com/v2/translate",
             data={
