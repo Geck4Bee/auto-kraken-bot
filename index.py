@@ -136,6 +136,13 @@ def sendWebHook(objs):
             headers={'Content-Type': 'application/json'}
         )
         print(response)
+        print('shot webhook matrix!')
+        response_matrix = requests.post(
+            os.environ['WEBHOOK_MATRIX'],
+            json.dumps({"secret": os.environ['MATRIX_WEBHOOK_KEY'], "message": content}),
+            headers={'Content-Type': 'application/json'}
+        )
+        print(response_matrix)
     except Exception as ew:
         sys.stderr.write("*** error *** in SendWebHook ***\n")
         sys.stderr.write(str(ew) + "\n")
